@@ -1,0 +1,12 @@
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Hi, I'm Rajkumar.
+    </h1>
+  </header>
+  <div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+    {{- partial "social_icons.html" -}}
+  </div>
+</article>
