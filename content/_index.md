@@ -1,4 +1,4 @@
-I [code], [read], [speak], [volunteer] and occasionally [write]. Welcome!, Just chill!!, Think simple!!!.
+I [code], [read], [speak], [volunteer] and occasionally [write]. Welcome!, Explore my work, projects, and insights. Thanks for visiting!
 
 [code]: ./about/#Projects
 [read]: ./resources/#books
