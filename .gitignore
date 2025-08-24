@@ -2,9 +2,6 @@
 .DS_Store
 Thumbs.db
 
-# IDEs
-.vscode
-
 # Hugo
 public/
 resources/_gen/

@@ -1,6 +1,7 @@
 ---
 title: A Mysterious Beast
 summary: "Chapter 1 : Love and Math by Edward Frenkel"
+weight : 0
 ---
 Mathematics is well appreciated when you find an application, or you will find its beauty when you get a chance to apply it. However, it depends on your life dynamics. In my life, I enjoyed doing math until a strange incident. But let's talk about Author Edward Frenkel; let's call him Ed. Yeah, it's the same with him, but it's a different scenario. He found it to be boring. He finds books on quantum physics attractive. Let's keep this idea straightforward. In general, humans used to think matter is made of fundamental particles called atoms. As far as I know, nothing in science ended with "We found everything about this field". New evidence shows that atoms are made of electrons, protons, and neutrons. Later, the author read a book that states that all the particles are themselves made of quarks. I kinda like the name "Quark". It's the same with the author. He points the origin of its name to a mock poem by James Joyce's Finnegans Wake.
 

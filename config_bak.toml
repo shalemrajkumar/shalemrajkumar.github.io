@@ -19,6 +19,7 @@ showPostNavLinks = true
 showCodeCopyButtons = true
 showFullTextinRSS = true
 showShareButtons = true
+math = true
 
 # Shown on the home page
 socialIcons = [
@@ -44,8 +45,7 @@ weight = 1
 identifier = "bio"
 name = "bio"
 title = "bio"
-# url = "/about/"
-url = "/wip/"
+url = "/bio/"
 
 [[menu.main]]
 weight = 2
@@ -53,7 +53,7 @@ identifier = "research"
 name = "research"
 title = "research"
 # url = "/research/"
-url = "/wip/"
+url = "/research/"
 
 
 [[menu.main]]
@@ -93,7 +93,7 @@ identifier = "search"
 name = "search"
 title = "search"
 # url = "/search/"
-url = "/wip/"
+url = "/search/"
 
 [[menu.main]]
 weight = 8
@@ -105,3 +105,10 @@ url = "/tags/"
 # Allow HTML in my content pages.
 [markup.goldmark.renderer]
 unsafe = true
+
+[outputs]
+[outputs.home]
+HTML = true
+RSS = true
+JSON = true
+

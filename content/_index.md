@@ -7,8 +7,8 @@ This site is primarily about sharing some useful documentation and resources, wi
 Thanks for visiting!
 
 
-[code]: ./about/#Projects
-[read]: ./resources/#books
-[volunteer]: ./about/#Extracurricular_Activities
-[speak]: ./about/#Presentations
-[write]: ./Blog/
+[code]: ./bio/#current-projects
+[read]: ./open_docs/resources/#books
+[volunteer]: ./bio/#activities-societies-and-volunteering
+[speak]: ./bio/#talks-and-presentations
+[write]: ./blog/

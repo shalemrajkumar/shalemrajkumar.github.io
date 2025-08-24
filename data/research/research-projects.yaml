@@ -1,0 +1,19 @@
+- thing: "Ephaptic Coupling in Olfactory Receptor Neurons: Sensilla Computational Modeling"
+  detail: UNDERGRADUATE RESEARCH PROJECT
+  timeline: Aug. 2024 ‑ Sep. 2024
+  description: |-
+    Developed multiple variants of spiking‑coupled ORN models with adjustable parameters and integrated noise generation.
+
+- thing: "Assessing the Distribution of Network Neurons in a Working Memory Model"
+  detail: "MENTOR: DR. ROMAN BARAVALLE, NEUROMATCH ACADEMY" 
+  timeline: July. 2023 ‑ Aug. 2023
+  link: https://github.com/https://github.com/shalemrajkumar/TriceratopsWithLesion
+  description: |-
+    Utilized a reservoir model of gated working memory with 1000 neurons, operating on line‑attractor dynamics, to analyze the impact of specific neuron lesions on working memory task performance.
+
+- thing: State Dependence of Value Signals in Reward‑Punishment Learning Paradigm
+  detail: "INSTRUCTOR: DR. ARJUN RAMAKRISHNAN, IIT KANPUR"
+  timeline: Jan. 2023 ‑ May. 2023
+  link: https://github.com/shalemrajkumar/Active-Learning_GDSC
+  description: |-
+    Developed a behavioural game in Python with interactive elements, Applied model‑free reinforcement learning to understand data from 25 subjects.
