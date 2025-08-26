@@ -90,17 +90,18 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+            
 
 
 # search functionality      
 
 outputs:
   home:
-    HTML: true
-    RSS: true
-    JSON: true
+    - HTML
+    - RSS
+    - JSON
 
-params:
+# search - fusejs
   fuseOpts:
     isCaseSensitive: false
     shouldSort: true
@@ -108,7 +109,6 @@ params:
     distance: 1000
     threshold: 0.4
     minMatchCharLength: 0
-    # limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
     keys: ["title", "permalink", "summary", "content"]
 
 
