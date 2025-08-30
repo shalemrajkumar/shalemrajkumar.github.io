@@ -40,49 +40,43 @@ menu:
   main:
     - weight: 1
       identifier: bio
-      name: bio
+      name: Bio
       title: bio
       url: /bio/
 
     - weight: 2
       identifier: research
-      name: research
-      title: research
+      name: Research
+      title: Research
       url: /research/
 
     - weight: 3
       identifier: blog
-      name: blog
+      name: Blog
       title: blog
       url: /blog/
 
     - weight: 4
-      identifier: open_docs
-      name: open docs
-      title: open docs
+      identifier: whats up!
+      name: Whats up!
+      title: what's up!
       url: /wip/
 
     - weight: 5
-      identifier: whats up!
-      name: whats up!
-      title: What's up!
-      url: /wip/
-
-    - weight: 6
       identifier: archives
-      name: archives
+      name: Archive
       title: archives
       url: /archives/
 
-    - weight: 7
+    - weight: 6
       identifier: search
-      name: search
+      name: Search
       title: search
       url: /search/
 
-    - weight: 8
+    - weight: 7
       identifier: tags
-      name: tags
+      name: Tags
       title: tags
       url: /tags/
 
@@ -102,13 +96,14 @@ outputs:
     - JSON
 
 # search - fusejs
-  fuseOpts:
-    isCaseSensitive: false
-    shouldSort: true
-    location: 0
-    distance: 1000
-    threshold: 0.4
-    minMatchCharLength: 0
-    keys: ["title", "permalink", "summary", "content"]
+fuseOpts:
+  isCaseSensitive: false
+  shouldSort: true
+  location: 0
+  distance: 1000
+  threshold: 0.4
+  minMatchCharLength: 0
+  keys: ["title", "permalink", "summary", "content"]
 
-
+# archive page
+ShowAllPagesInArchive: true
