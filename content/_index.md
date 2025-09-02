@@ -8,7 +8,7 @@ Thanks for visiting!
 
 
 [code]: ./bio/#current-projects
-[read]: ./open_docs/resources/#books
+[read]: ./books
 [volunteer]: ./bio/#activities-societies-and-volunteering
 [speak]: ./bio/#talks-and-presentations
 [write]: ./blog/

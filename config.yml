@@ -22,6 +22,7 @@ params:
   showCodeCopyButtons: true
   showFullTextinRSS: true
   showShareButtons: true
+  ShowAllPagesInArchive: true
   math: true
 
   socialIcons:
@@ -57,16 +58,16 @@ menu:
       url: /blog/
 
     - weight: 4
-      identifier: whats up!
-      name: Whats up!
-      title: what's up!
-      url: /wip/
+      identifier: my_docs
+      name: MyDocs
+      title: my_docs
+      url: /MyDocs/
 
-    - weight: 5
-      identifier: archives
-      name: Archive
-      title: archives
-      url: /archives/
+   # - weight: 5
+   #   identifier: archives
+   #   name: Archive
+   #   title: archives
+   #   url: /archives/
 
     - weight: 6
       identifier: search
@@ -104,6 +105,3 @@ fuseOpts:
   threshold: 0.4
   minMatchCharLength: 0
   keys: ["title", "permalink", "summary", "content"]
-
-# archive page
-ShowAllPagesInArchive: true

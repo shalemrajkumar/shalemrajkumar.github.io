@@ -1,16 +1,17 @@
 ## Site outline
 
-1. bio
-2. research
-3. blog
-4. whats up!
-5. archives
-6. search
-7. tags
+1. Bio
+2. Research
+3. Blog
+4. Whats up!
+5. MyDocs
+5. Archive
+6. Search
+7. Tags
 
 
 <details>
-<summary>tree view of zettelkasten</summary>
+<summary>tree view of site</summary>
 
 ```
 .
@@ -26,7 +27,7 @@
 ├── config.yml
 ├── content
 │   ├── _index.md
-│   ├── archive.md
+│   ├── archives.md
 │   ├── bio
 │   ├── blog
 │   ├── open_docs
