@@ -190,17 +190,17 @@ Arch Linux ships naked out of the box with only few most essential packages. Thi
 - [`playerctl`]() (media player controller)
 - [`rustdesk`]() (remote desktop)
 
-## my dotfiles
+### my dotfiles
 
-## few addon modifications
+### few addon modifications
 
-## scripts
+### scripts
 
-## important commands
+### important commands
 
-## tips and tricks
+### tips and tricks
 
-## references
+### references
 
 1. [Arch Wiki](https://wiki.archlinux.org/title/List_of_applications/Utilities)
 2. [fwcd](https://github.com/fwcd/arch-pkgs/blob/main/README.md)

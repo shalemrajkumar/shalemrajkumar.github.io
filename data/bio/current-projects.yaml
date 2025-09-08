@@ -1,6 +1,12 @@
+  - thing: Cracking Multi-Level PUF using ML
+  detail: "INSTRUCTOR : DR. PURUSHOTTAM KAR, IIT KANPUR" 
+  timeline: Dec. 2024 ‑ Jan. 2025
+  link: https://github.com/shalemrajkumar/CrackThePUF
+  description: |-
+    Utilized Kernel Methods to crack a non-linear Multi-Level PUF by training a simple linear classfiers (LinearSVC, Logistic Regression) on transformed features
 
 - thing: Random walk simulations in n‑Dimensional diluted lattice‑based network
-  detail: "MENTOR : DR.SHAKTI N. MENON, THE INSTITUTE OF MATHEMATICAL SCIENCES" 
+  detail: "MENTOR : DR. SHAKTI N MENON, THE INSTITUTE OF MATHEMATICAL SCIENCES" 
   timeline: Dec. 2024 ‑ Jan. 2025
   link: https://github.com/shalemrajkumar/hare_and_tortoise.git
   description: |-
