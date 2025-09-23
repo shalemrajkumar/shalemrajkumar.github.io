@@ -26,8 +26,7 @@ ShowPostNavLinks: true
 
 1. Check the size of the package cache:
    
-```bash
-    
+```bash 
     du -sh /var/cache/pacman/pkg/
 
 ```
@@ -37,7 +36,6 @@ ShowPostNavLinks: true
     i. Remove uninstalled packages from the cache:
 
     ```bash
-        
         sudo pacman -Sc
         yay -Sc
 
@@ -46,7 +44,6 @@ ShowPostNavLinks: true
     ii. Remove all cached packages except for the most recent three versions of each package:
 
     ```bash
-
         sudo pacman -S pacman-contrib
 
         sudo paccache -r
@@ -56,7 +53,6 @@ ShowPostNavLinks: true
     iii. Remove all cached packages:
 
     ```bash
-        
         sudo pacman -Scc
         yay -Scc
 
@@ -66,7 +62,6 @@ ShowPostNavLinks: true
     to list them :
     
     ```bash
-        
         pacman -Qdt
 
     ```
@@ -74,7 +69,6 @@ ShowPostNavLinks: true
     to remove them:
 
     ```bash
-        
         sudo pacman -Rns $(pacman -Qtdq)
 
     ```
@@ -84,7 +78,6 @@ ShowPostNavLinks: true
 1. Check the size of journal logs:
 
 ```bash
-    
     journalctl --disk-usage
 
 ```
@@ -94,7 +87,6 @@ ShowPostNavLinks: true
     i. Remove journal logs older than a specific time period (e.g., 2 weeks):
 
     ```bash
-        
         sudo journalctl --vacuum-time=2weeks
 
     ```
@@ -102,7 +94,6 @@ ShowPostNavLinks: true
     ii. Limit the size of journal logs to a specific size (e.g., 500M):
 
     ```bash
-        
         sudo journalctl --vacuum-size=500M
 
     ```
@@ -113,14 +104,12 @@ ShowPostNavLinks: true
 1. Clean system temporary files:
 
 ```bash
-    
     sudo rm -rf /tmp/*
     sudo rm -rf /var/tmp/*
 ```
 2. Clean user cache:
 
 ```bash
-    
     rm -rf ~/.cache/*
 
 ```
@@ -146,7 +135,6 @@ ShowPostNavLinks: true
 - Systemd timer create file in /etc/systemd/system/paccache.timer
 
 ```ini
-
     [Unit]
     Description=Clean-up old pacman pkg cache
 

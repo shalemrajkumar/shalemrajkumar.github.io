@@ -75,11 +75,11 @@ menu:
       title: search
       url: /search/
 
-    - weight: 7
-      identifier: tags
-      name: Tags
-      title: tags
-      url: /tags/
+   # - weight: 7
+   #   identifier: tags
+   #   name: Tags
+   #   title: tags
+   #   url: /tags/
 
 markup:
   goldmark:
