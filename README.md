@@ -26,15 +26,15 @@
 │   └── hugo-deploy
 ├── config.yml
 ├── content
+│   ├── Mydocs
 │   ├── _index.md
-│   ├── archives.md
+│   ├── archives
 │   ├── bio
 │   ├── blog
-│   ├── open_docs
+│   ├── books.md
 │   ├── research
 │   ├── search
 │   ├── tags
-│   ├── whats_up
 │   └── wip
 ├── data
 │   ├── bio
@@ -46,6 +46,26 @@
 │   ├── partials
 │   ├── shortcodes
 │   └── wip.html
+├── public
+│   ├── 404.html
+│   ├── archive
+│   ├── archives
+│   ├── assets
+│   ├── bio
+│   ├── blog
+│   ├── books
+│   ├── categories
+│   ├── hidden
+│   ├── index.html
+│   ├── index.json
+│   ├── index.xml
+│   ├── mydocs
+│   ├── page
+│   ├── research
+│   ├── search
+│   ├── sitemap.xml
+│   ├── tags
+│   └── wip
 ├── static
 ├── themes
 │   └── PaperMod
