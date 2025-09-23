@@ -3,11 +3,9 @@
 1. Bio
 2. Research
 3. Blog
-4. Whats up!
-5. MyDocs
-5. Archive
-6. Search
-7. Tags
+4. MyDocs
+5. Search
+6. Tags
 
 
 <details>
