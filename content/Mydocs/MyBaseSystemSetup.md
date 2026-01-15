@@ -11,7 +11,6 @@ comments: true
 # canonicalURL: "https://canonical.url/to/page"
 disableHLJS: true # to disable highlightjs
 disableShare: false
-disableHLJS: false
 hideSummary: false
 searchHidden: false
 ShowReadingTime: false
@@ -82,7 +81,7 @@ Arch Linux ships naked out of the box with only few most essential packages. Thi
 - [`xautolock`]() (auto lock screen)
 - [`xclip`]() (clipboard management)
 
-### cli tools and untilities
+### cli tools and Utilities
 
 - [`gdu`]() or [`ncdu`]() (disk usage analyzer)
 - [`tree`]() (display directory tree)
@@ -102,6 +101,7 @@ Arch Linux ships naked out of the box with only few most essential packages. Thi
 - [`togo`]() (todo list manager)
 - [`neofetch`]() or [`fastfetch`]() (system information)
 - [`asciinema`]() (terminal session recorder)
+- [`gawk`]() (text processing language)
 
 
 ### system tools and monitoring
@@ -199,6 +199,25 @@ Arch Linux ships naked out of the box with only few most essential packages. Thi
 ### important commands
 
 ### tips and tricks
+
+### firefox
+
+- shyfox theme
+- privacy settings
+- extensions
+    - sidebery*
+    - ublock origin
+    - dark reader
+    - privacy badger
+    - https everywhere
+    - vimium c 
+    - userchome toggle*
+    - speed controller
+    - wikiwand
+    - grammarly
+
+> [!NOTE]
+> *part of the shyfox theme
 
 ### references
 

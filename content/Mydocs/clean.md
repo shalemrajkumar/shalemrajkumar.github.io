@@ -11,7 +11,6 @@ comments: true
 # canonicalURL: "https://canonical.url/to/page"
 disableHLJS: true # to disable highlightjs
 disableShare: false
-disableHLJS: false
 hideSummary: false
 searchHidden: true
 ShowReadingTime: false
@@ -20,7 +19,7 @@ ShowPostNavLinks: true
 ---
 
 
-### system cleaning
+### System cleaning
 
 #### `cleaning packages`
 
@@ -120,7 +119,7 @@ ShowPostNavLinks: true
     - `~/.local/share/` -- old files may be lying there
     - `~/.streamio-server/` -- cache of streamio applications
 
-### other useful tools
+### Other useful tools
 
 - `gdu` - A disk usage analyzer with a terminal user interface.
 - `paccache from pacman-contrib` - A utility to manage the package cache of pacman.
@@ -130,7 +129,7 @@ ShowPostNavLinks: true
 - `rmlint` - A tool to find and remove duplicate files and other lint on the filesystem.
 - `localepurge (AUR)` - A tool to remove unnecessary locale files and free up disk space.
 
-### automate pacman cleaning
+### Automate pacman cleaning
 
 - Systemd timer create file in /etc/systemd/system/paccache.timer
 
