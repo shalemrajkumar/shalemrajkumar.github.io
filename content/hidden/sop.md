@@ -1,3 +1,25 @@
+---
+title: Statement of Purpose (SOP) for PhD Applications
+weight : 0
+tags: ["SOP", "PersonalStatement", "PhDApplications", "ResearchStatement"]
+showToc: true
+TocOpen: false
+draft: false
+hidemeta: false
+comments: true
+# description: ""
+# canonicalURL: "https://canonical.url/to/page"
+disableHLJS: true # to disable highlightjs
+disableShare: false
+hideSummary: false
+searchHidden: true
+ShowReadingTime: false
+ShowBreadCrumbs: true
+ShowPostNavLinks: true
+---
+
+
+
 This is my understanding of why SOP (Statement of Purpose/research statement) after certain research and their references
 
 ### Variation's in SOP and its jargon

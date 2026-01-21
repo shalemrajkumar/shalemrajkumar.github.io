@@ -1,3 +1,26 @@
+---
+title: "Writing Letters of Reference for Students"
+weight : 0
+tags: ["reference letters", "academia", "graduate school applications"]
+showToc: true
+TocOpen: false
+draft: false
+hidemeta: false
+comments: true
+# description: ""
+# canonicalURL: "https://canonical.url/to/page"
+disableHLJS: true # to disable highlightjs
+disableShare: false
+hideSummary: false
+searchHidden: true
+ShowReadingTime: false
+ShowBreadCrumbs: true
+ShowPostNavLinks: true
+---
+
+
+
+
 ### My documentation for reference letters to students in academica (graduate school applications)
 
 > Note some of the lines are exact copy from various university websites for reference letters to students. cited at the end.

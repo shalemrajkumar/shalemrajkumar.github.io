@@ -44,7 +44,7 @@ Different architectures of RNNs include:
 - Bidirectional RNNs
 - Deep RNNs
 
-RNNs in biological neural systems are core of every cognitive function, they are responsible for information processing, maintaining working memory, and generating temporal patterns of activity that facilitate learning. Feedback is basic subunit of intelligence in biological systems!
+RNNs in biological neural systems are core of most cognitive function, they are responsible for information processing, maintaining working memory, and generating temporal patterns of activity that facilitate learning. Feedback is basic subunit of intelligence in biological systems!
 
 Neuroscience models:
 - Elman Networks
@@ -60,6 +60,13 @@ Neuroscience applications of RNNs:
 - Temporal Pattern recognition
 - Motor Control
 - Spontaneous Activity based circuit refinement
+
+Optimization techniques for RNNs:
+
+- Backpropagation Through Time (BPTT)
+- Real-Time Recurrent Learning (RTRL)
+- Truncated Backpropagation Through Time (TBPTT)
+- Surrogate gradient descent (for spiking RNNs) {not really sure if they can be used}
 
 
 ## Point neuron based RNNs
@@ -85,28 +92,114 @@ Neuroscience applications of RNNs:
 
 Classic RNNs can keep track of arbitrary long-term dependencies in the input sequences. But during training via back-propagation, the long-term gradients which are back-propagated can "vanish", RNNs using LSTM units partially solve the vanishing gradient problem, because LSTM units allow gradients to also flow with little to no attenuation. However, LSTM networks can still suffer from the "exploding gradient problem".
 
+---
+---
 
 ### Long Short-Term Memory
 
 #### introduction
 
-LSTMs architecture is designed to address the vanishing gradient problem in traditional RNNs by introducing *memory cells* and *gating mechanisms* that allow the network to maintain and update information over longer sequences (usually short-term memory for RNN that can last thousands of timesteps (thus longterm))
+LSTMs architecture is designed to address the vanishing gradient problem in traditional RNNs by introducing *memory cell (or cell)* and *gating mechanisms* that allof the network to maintain and update information over longer sequences (usually short-term memory for RNN that can last thousands of timesteps (thus longterm))[1](#lstmref1).
 
 An LSTM unit is typically composed of a cell and three gates:
 
-- **Cell State**: 
+- **Cell State (special hidden state)** $C_t$:  
     -Carries information across arbitary time steps. while the gates regulate the flow of information into and out of the cell state.
-- **Forget Gate**: 
+- **Forget Gate** $F_t$: 
     - Determines which information from the previous cell state should be discarded. 
     - It maps the previous state and the current input to a value between 0 and 1 (after rounding 0 $\rightarrow$ completely forget, 1 $\rightarrow$ completely retain)
-- **Input Gate**: 
+- **Input Gate** $I_t$: 
     - Input gates decide which pieces of new information to store in the current cell state. ( similar mechanism like forget gates) 
-- **Output Gate**: 
+- **Output Gate** $O_t$: 
     - Output gates control which pieces of information in the current cell state to output. (similar mechanisms)
 
-#### algorithm
+Primary goal of LSTM subunits is to be able to decide when to `remember` and when to `ignore inputs in the hidden state` via a dedicated mechanism.
 
-1. Initialize weights and biases
+---
+
+#### `Input, output, forget gates and memory cell`
+
+At each time step t, the LSTM performs the following operations:
+
+- Input steam from previous hidden state \( h_{t-1} \) and current input \( x_t \) are processed ahead with 3 fully connected layers thresholded with sigmoid -> (0, 1).
+![image showing computaion of forget gate, input gate, output gate](https://classic.d2l.ai/_images/lstm-0.svg)
+
+it can be written as:
+
+- $$ I_t \ = \ \sigma(X_t W_{xi} + H_{t-1} W_{hi} + b_i) $$
+- $$ F_t \ = \ \sigma(X_t W_{xf} + H_{t-1} W_{hf} + b_f) $$
+- $$ O_t \ = \ \sigma(X_t W_{xo} + H_{t-1} W_{ho} + b_o) $$
+
+---
+
+#### `Candidate memory cell` $\tilde{C_t}$ 
+
+![image showing computation of candidate memory cell](https://classic.d2l.ai/_images/lstm-1.svg)
+
+- Memory cell ($C_t$) similar to hidden state ($H_t$) dimensions 
+
+- $$ \tilde{C_t} = tanh(X_t W_{xc} + H_{t-1} W_{hc} + b_c) $$
+    
+    - This computation is similar to other gates except the use of tanh activation -> (-1, 1).
+
+---
+
+#### `Updating memory cell` $C_t$
+
+![image showing computation of updating memory cell](https://classic.d2l.ai/_images/lstm-2.svg)
+
+- Now we have $\tilde{C_t}$ and $C_{t-1}$
+    - The $I_t$ and $F_t$ ranging from 1 to 0 defines how much of $\tilde{C_t}$ and $C_{t-1}$ to keep respectively.
+
+- $$ C_t = F_t \odot C_{t-1} + I_t \odot \tilde{C_t} $$
+
+
+---
+
+#### `Computing hidden state` $H_t$
+
+![image showing computation of hidden state](https://classic.d2l.ai/_images/lstm-3.svg)
+
+- Output gate $O_t$ defines how much of the $C_t$ to output as hidden state $H_t$.
+
+- $$ H_t = O_t \odot tanh(C_t) $$
+
+- LSTM it is simply a gated version of the of the memory cell (final prediction).
+
+- So whenever output gate is closed, no $H_t$ information is passed to the next layer.
+
+---
+
+## Optimization techniques for RNNs
+
+### Backpropagation Through Time (BPTT)
+
+The tricky part about RNNs is their recurrent nature, which makes it impossible to apply standard backpropagation directly. But curret approach is to "unroll" the RNN through time, treating it feedforward network. Now compute the loss at each time step and backpropagate the errors through the unrolled network.
+
+```
+Time:         t
+         
+Output:       ŷₜ
+              ↑        
+Cell:   --> [RNN] --> ...
+              ↑    hₜ
+Input:        xₜ
+
+```
+
+```
+Time:     t=0        t=1        t=2        t=3
+         
+Output:   ŷ₀         ŷ₁         ŷ₂         ŷ₃
+           ↑          ↑          ↑          ↑
+Cell:    [RNN] -->  [RNN] -->  [RNN] -->  [RNN]
+           ↑    h₀    ↑    h₁    ↑    h₂    ↑    h₃
+Input:    x₀         x₁         x₂         x₃
+
+Forward:  ────────────────────────────────────>
+BPTT:     <────────────────────────────────────
+
+```
 
 #### additional resources and documentation
 
@@ -117,6 +210,14 @@ An LSTM unit is typically composed of a cell and three gates:
 Recurrent Neural Networks are inspired from the neuroscience, a fully cross-coupled perceptron network is equivalent to an infinitely deep feedforward network but we train these networks with backpropagation which has limitations such as vanishing and exploding gradients. To overcome these limitations, more advanced architectures like LSTM and GRU were developed, but the fundamental question still remains, "how our brain recurrent motifs learn ?"
 
 ## References
+
+
+### LSTM references
+
+<a id="lstmref1"></a>
+1. [wiki](https://www.wikiwand.com/en/articles/Long_short-term_memory) 
+<a id="lstmref2"></a>
+2. [Dive into Deep Learning - RNNs](https://classic.d2l.ai/chapter_recurrent-modern/lstm.html)
 
 
 ## Additional references and tutorials
