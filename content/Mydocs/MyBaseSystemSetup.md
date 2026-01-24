@@ -85,6 +85,7 @@ Arch Linux ships naked out of the box with only few most essential packages. Thi
 
 - [`gdu`]() or [`ncdu`]() (disk usage analyzer)
 - [`tree`]() (display directory tree)
+- [`yazi`]() or [`ranger`]() (file manager)
 - [`atuin`]() (shell history manager)
 - [`fzf`]() (fuzzy finder)
 - [`zoxide`]() (smart cd command)
