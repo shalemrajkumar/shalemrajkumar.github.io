@@ -38,31 +38,29 @@ My Alacritty [config files]() with Dracula theme.
 
 ## Kitty
 
-1. Remove Alacritty 
-```
-sudo pacman -Rns alacritty
-``````
-2. Install Kitty 
+1. Install Kitty 
 ```
 sudo pacman -S Kitty
 ```
-3. make config file 
+2. make config file 
 ```
 nvim ~/.config/kitty/kitty.conf
 ```
 
-4. Create a symbolic link for the config file:
+3. Create a symbolic link for the config file:
 
 ```fish
 ln -s ~/dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
 ```
-5. I used kitty [config file](https://github.com/Fadilix/dotfiles/blob/main/kitty/kitty.conf) from Fadilix
-
-6. I update my fish shell config such that my alias for ls uses `exa` with colors and icons:
+4. Create kitty config file. I used kitty [config file](https://github.com/Fadilix/dotfiles/blob/main/kitty/kitty.conf) from Fadilix.
+```
+nvim ~/.config/kitty/kitty.conf
+```
+5. I have updated my fish shell config such that my alias for ls uses `exa` with colors and icons. This is important to make use of hyperlinks in kitty. default ls users can use `ls --hyperlink=auto`.
 ```fish
 alias ls='exa --hyperlink --icons --color=auto'
 ```
-7. create a new file in `~/config/kitty/open-action.conf` and add the following content   
+6. create a new file in `~/config/kitty/open-action.conf` and add the following content   
  ```conf
  # Tail a log file (*.log) in a new OS Window and reduce its font size
  protocol file
@@ -99,11 +97,11 @@ alias ls='exa --hyperlink --icons --color=auto'
  - [Scripting the mouse click](https://sw.kovidgoyal.net/kitty/open_actions/#scripting-the-mouse-click)
  - [Hyperlink Grep Kitten](https://sw.kovidgoyal.net/kitty/kittens/hyperlinked_grep/#hyperlinked-grep)
 
-8. Download themes using 
+7. Download themes using 
 ```
 kitty +kitten themes --list
 ```
-9. my additional addons to kitty.conf
+8. my additional addons to kitty.conf
 ```conf
 # Hyperlink hints
 map ctrl+f kitten hints --type hyperlink
