@@ -105,4 +105,7 @@ kitty +kitten themes --list
 ```conf
 # Hyperlink hints
 map ctrl+f kitten hints --type hyperlink
+
+# focus_visible_window
+map ctrl+; focus_visible_window
 ```
