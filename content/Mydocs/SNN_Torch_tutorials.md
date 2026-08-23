@@ -39,11 +39,7 @@ ShowPostNavLinks: true
 
 ### Tutorial 1 
 
-1.1. How to convert datasets into spiking datasets?
-1.2. How to visualizing the converted datasets?
-1.3. How to generate random spike trains?
-
-#### 1.1. How to convert datasets into spiking datasets?
+#### How to convert datasets into spiking datasets?
 
 Building SNNs we need Input data
 
@@ -51,13 +47,13 @@ So our inputs can be encoded in terms of spikes or could be used directly (in tu
 
 basic questions
 
-- why to encoding data?
-- How brain encodes information? (latency vs firing rate) 
-- how long (duration)
-- how many spikes? (frequency)
+- Why to encoding data?
+- How do brain encodes information? (latency vs firing rate) 
+- How long to encode? (number of time steps)
+- how many spikes (frequency) to encode?
 - how to encode each kind of data? (image, audio, text, etc.)
 
-##### why to encoding data?
+#### Why to encoding data?
 
 Appeal of encoding data come from the three S's: spikes, sparsity, and static suppression.
 
@@ -131,7 +127,7 @@ One example of converting input data (MNIST) into a rate code is as follows.
 
 
 
-##### How do brain encodes information?
+#### How do brain encodes information?
 
 There has been a debate in neuroscience about whether the brain uses rate coding or latency coding.
 
@@ -171,7 +167,13 @@ a single spike carries much more meaning than in rate codes which rely on firing
 
 ##### rate coding vs latency coding visualization
 
-![Rate-coded-mnist-5](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/spike_mnist_test.gif) ![latency-coded-mnist-5](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/mnist_latency.gif)
+`Rate coding`
+
+![Rate-coded-mnist-5](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/spike_mnist_test.gif?raw=true)
+
+`Latency coding`
+
+![latency-coded-mnist-5](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/mnist_latency.gif?raw=true)
 
 #### Delta Modulation
 
