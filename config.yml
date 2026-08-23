@@ -24,6 +24,11 @@ params:
   showShareButtons: true
   ShowAllPagesInArchive: true
   math: true
+  
+  author:
+    name: "shalemrajkumar"
+    email: ""
+
 
   socialIcons:
     - name: github

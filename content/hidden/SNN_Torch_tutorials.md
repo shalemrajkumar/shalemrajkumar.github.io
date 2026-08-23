@@ -1,3 +1,35 @@
+---
+title: Brief summary of SNN Torch tutorials
+summary: "quick review of SNN Torch tutorials"
+weight : 0
+# aliases: [""]
+tags: ["SNN", "SNN_Torch", "tutorial", "NN"]
+author: "sraj"
+showToc: true
+TocOpen: false
+draft: false
+hidemeta: false
+comments: true
+# description: ""
+# canonicalURL: "https://canonical.url/to/page"
+disableHLJS: true # to disable highlightjs
+disableShare: false
+hideSummary: false
+searchHidden: True # uncomment here -> after completion
+ShowReadingTime: true
+ShowBreadCrumbs: true
+ShowPostNavLinks: true
+# cover:
+#     image: "<image path/url>" # image path/url
+#     alt: "<alt text>" # alt text
+#     caption: "<text>" # display caption under cover
+#     relative: false # when using page bundles set this to true
+#     hidden: true # only hide on current single page
+# editPost:
+#     URL: "https://github.com/kiwamizamurai/content"
+#     Text: "Suggest Changes" # edit text
+#     appendFilePath: true # to append file path to Edit link
+---
 
 **_This is a brief documentation for my reference from [SNN Torch documentation]()_**
 
@@ -137,9 +169,9 @@ a single spike carries much more meaning than in rate codes which rely on firing
 <img src='https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial1/1_2_4_latencyrc.png?raw=true' width="600">
 </center>
 
-##### **spikegen.latency docs**
+##### rate coding vs latency coding visualization
 
-- *...*
+![Rate-coded-mnist-5](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/spike_mnist_test.gif) ![latency-coded-mnist-5](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/mnist_latency.gif)
 
 #### Delta Modulation
 
@@ -232,3 +264,19 @@ spike_data_delta = spikegen.delta(data_it, num_steps=num_steps)
 
 
 ```
+
+#### Additional docs 
+
+##### **spikegen.rate docs**
+
+- *...*
+
+
+##### **spikegen.latency docs**
+
+- *...*
+
+##### **spikegen.delta docs**
+
+- *...*
+
