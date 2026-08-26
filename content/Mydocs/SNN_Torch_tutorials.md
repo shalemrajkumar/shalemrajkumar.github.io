@@ -35,7 +35,7 @@ ShowPostNavLinks: true
 
 ### Reading
 
--  [IEEE pub suggestion by SNN torch creators](https://ieeexplore.ieee.org/abstract/document/10242251)
+-  [The SNNTorch tutorial series is based on the following IEEE paper by JASON et al](https://ieeexplore.ieee.org/abstract/document/10242251)
 
 ### Tutorial 1 
 
@@ -45,7 +45,7 @@ Building SNNs we need Input data
 
 So our inputs can be encoded in terms of spikes or could be used directly (in tutorial 3)
 
-basic questions
+<u>basic questions</u>
 
 - Why to encoding data?
 - How do brain encodes information? (latency vs firing rate) 
@@ -57,19 +57,25 @@ basic questions
 
 Appeal of encoding data come from the three S's: spikes, sparsity, and static suppression.
 
-- spikes
+- **spikes**
     - Biological neurons process and communicate via spikes (100s of mV in amplitude, 1-2 ms in duration) 
     - Many computational models of neurons simplify this voltage burst to a discrete, single-bit event: a '1' or a '0'. 
     - This is far simpler to represent in hardware than a high precision value.
 
-- sparsity
+<span style="display: block; margin-bottom: 1.5rem;">
+
+- **sparsity**
     - Neurons spend most of their time at rest, silencing most activations (in a network) to zero at any given time. 
     - Not only are sparse vectors/tensors (with loads of zeros) cheap to store, but say we need to multiply sparse activations with synaptic weights. If most values are multiplied by '0', then we don't need to read many of the network parameters from memory. This means neuromorphic hardware can be extremely efficient.
     - least overlaping encoding
 
-- Static-Suppression (a.k.a, event-driven processing)
+<span style="display: block; margin-bottom: 1.5rem;">
+
+- **Static-Suppression** (a.k.a, event-driven processing)
     - response to unchanging input is suppressed, so that the network only processes changes in the input. (movement, change in frequency, intensity, etc.)
     - Event-driven processing now only contributes to sparsity and power-efficiency by blocking unchanging input, but it often allows for much faster processing speeds.
+
+<span style="display: block; margin-bottom: 1.5rem;">
 
 <center>
 <img src='https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial1/3s.png?raw=true' width="600">
@@ -122,8 +128,8 @@ One example of converting input data (MNIST) into a rate code is as follows.
 
     - $${\rm P}(R_{ij}=1) = X_{ij} = 1 - {\rm P}(R_{ij} = 0)$$
     - example: one input pixel of MNIST with value 0.5 (normalized) will have a 50% chance of spiking at any given time step (here we are using 5 time steps).
-        - input_vector = [0.5, 0.5, 0.5, 0.5, 0.5]
-        - torch.bernoulli(input_vector) = [0, 1, 0, 1, 1] (randomly generated)
+    - input_vector = [0.5, 0.5, 0.5, 0.5, 0.5]
+    - torch.bernoulli(input_vector) = [0, 1, 0, 1, 1] (randomly generated)
 
 
 
@@ -151,11 +157,12 @@ a single spike carries much more meaning than in rate codes which rely on firing
 - susceptibility to noise 
 - less power consumed by the hardware running SNN algorithms by orders of magnitude
 
-- For our MNIST example,
+- For our MNIST example,<span style="display: block; margin-bottom: 1.5rem;">
 
     - We can use `spikegen.latency` function which allows each input to fire at most once during the full time sweep.
     - Features closer to 1 will fire earlier and features closer to 0 will fire later.
-    - Spike timing is calculated by treating the input feature as the current injection $I_{in}$ into an RC circuit. 
+    - Spike timing is calculated by treating the input feature as the current injection $I_{in}$ into an RC circuit.<span style="display: block; margin-bottom: 1.5rem;">
+
         - This current moves charge onto the capacitor, which increases $V(t)$. We assume that there is a trigger voltage, $V_{thr}$, which once reached, generates a spike. 
         - **The question then becomes**: *for a given input current (and equivalently, input feature), how long does it take for a spike to be generated?*
 <break>
@@ -193,7 +200,6 @@ Delta modulation is based on event-driven spiking. The `snntorch.delta` function
 
 import snntorch as snn
 import torch
-import matplotlib.pyplot as plt 
 
 from snntorch import utils
 from snntorch import spikegen
@@ -205,8 +211,9 @@ from IPython.display import HTML
 
 # Training Parameters
 batch_size=128
-data_path='/tmp/data/mnist'
+data_path='./data'
 num_classes = 10  # MNIST has 10 output classes
+num_steps = 100 
 
 # Torch Variables
 dtype = torch.float
@@ -243,7 +250,7 @@ mnist_train = utils.data_subset(mnist_train, subset)
 
 why use dataloder instead of for loop ?
 
-* way better than for loop
+* very efficient than "for loop"
 * Better through put for the gpu
 * shuffle and batching feature for epochs
 """
@@ -261,9 +268,24 @@ data_it, targets_it = next(data)
 
 spike_data_rate = spikegen.rate(data_it, num_steps=num_steps, gain=0.25) # gain reduces the # of spikes so p=1 is not torch.ones(num_steps) i.e always spiking.
 spike_data_latency = spikegen.latency(data_it, num_steps=num_steps)
-spike_data_delta = spikegen.delta(data_it, num_steps=num_steps)
+# spike_data_delta = spikegen.delta(data_it, num_steps=num_steps) ## this doesn't work for mnist because it is static representation
 
+# visualize the spike data 
 
+sample_idx = 0
+spike_data_rate_sample = spike_data_rate[:, sample_idx, 0]
+spike_data_latency_sample = spike_data_latency[:, sample_idx, 0]
+
+print("target:", targets_it[sample_idx].item())
+
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+ax[0].set_title("Rate Coding")
+ax[1].set_title("Latency Coding")
+
+anim_rate = splt.animator(spike_data_rate_sample, fig, ax[0])
+anim_latency = splt.animator(spike_data_latency_sample, fig, ax[1])
+
+plt.show()
 
 ```
 
@@ -281,4 +303,5 @@ spike_data_delta = spikegen.delta(data_it, num_steps=num_steps)
 ##### **spikegen.delta docs**
 
 - *...*
+
 
