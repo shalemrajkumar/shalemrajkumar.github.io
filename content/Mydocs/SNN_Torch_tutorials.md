@@ -37,7 +37,7 @@ ShowPostNavLinks: true
 
 -  [The SNNTorch tutorial series is based on the following IEEE paper by JASON et al](https://ieeexplore.ieee.org/abstract/document/10242251)
 
-### Tutorial 1 
+### [`Tutorial-1: Spike Generation to encode inputs`](https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_1.html) 
 
 #### How to convert datasets into spiking datasets?
 
@@ -303,5 +303,100 @@ plt.show()
 ##### **spikegen.delta docs**
 
 - *...*
+
+### [`Tutorial-2 LIF Neuron over perceptron`](https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_2.html) 
+
+So if we are using spiking or event driven data, we need a special types of neuron different from traditional perceptron or relu neurons.
+
+so we can go with different levels of abstraction over relu neurons, may be from LIF neuron to Hodgkin-Huxley neuron. But the fact is biology has its limitations and so does our hardware. So we need to find a balance between biological plausibility and hardware efficiency with the primary **goal** in mind.
+
+> We are looking for a event based computation, hoping its is what biology trying to achieve. 
+
+<u>Note:</u> We are missing the spacial computation aspect of it. I am not sure if the delay, refractory period and inhibtion could make up for the missing spacial computation. 
+
+<center>
+<img src='https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial2/2_1_neuronmodels.png?raw=true' width="1000">
+</center>
+
+#### **Leaky Integrate-and-Fire Neuron**
+
+The leaky integrate-and-fire (LIF) neuron, Just like the relu neuron takes a sum of weighted inputs But rather than passing it directly to an activation function, it will integrate the input over time with a leakage, much like an RC circuit. If the integrated value exceeds a threshold, then the LIF neuron will emit a voltage spike. 
+
+The LIF neuron abstracts away the shape and profile of the output spike; it is simply treated as a discrete event. (why? biological importance of spike is to pass the signal along a long axon - but wait there are dendro-axonic, axo-axonic connections in fly) As a result, information is not stored within the spike, but rather the timing (or frequency) of spikes.
+
+Simple spiking neuron models have produced much insight into the neural code, memory, network dynamics, and more recently, deep learning. The LIF neuron sits in the sweet spot between biological plausibility and practicality. 
+
+##### what are we missing in LIF neuron?
+
+- backpropagation of spikes 
+- shunting inhibition
+- dendritic computation 
+- ...
+
+#### Derivation of LIF neuron 
+
+Now say some arbitrary time-varying current $I_{\rm in}(t)$ is injected into the neuron, be it via electrical stimulation or from other neurons. The total current in the circuit is conserved, so:
+
+$$I_{\rm in}(t) = I_{R} + I_{C}$$
+
+From Ohm's Law, the membrane potential measured between the inside and outside of the neuron $U_{\rm mem}$ is proportional to the current through the resistor:
+
+$$I_{R}(t) = \frac{V_{\rm mem}(t)}{R}$$
+
+The capacitance is a proportionality constant between the charge stored on the capacitor $Q$ and $U_{\rm mem}(t)$:
+
+
+$$Q = CV_{\rm mem}(t)$$
+
+The rate of change of charge gives the capacitive current:
+
+$$\frac{dQ}{dt}=I_C(t) = C\frac{dV_{\rm mem}(t)}{dt}$$
+
+Therefore:
+
+$$I_{\rm in}(t) = \frac{V_{\rm mem}(t)}{R} + C\frac{dV_{\rm mem}(t)}{dt}$$
+
+$$\implies RC \frac{dV_{\rm mem}(t)}{dt} = -V_{\rm mem}(t) + RI_{\rm in}(t)$$
+
+The right hand side of the equation is of units **\[Voltage]**. On the left hand side of the equation, the term $\frac{dV_{\rm mem}(t)}{dt}$ is of units **\[Voltage/Time]**. To equate it to the left hand side (i.e., voltage), $RC$ must be of unit **\[Time]**. We refer to $\tau = RC$ as the time constant of the circuit:
+
+$$ \tau \frac{dV_{\rm mem}(t)}{dt} = -V_{\rm mem}(t) + RI_{\rm in}(t)$$
+
+The passive membrane is therefore described by a linear differential equation.
+
+For a derivative of a function to be of the same form as the original function, i.e., $\frac{dV_{\rm mem}(t)}{dt} \propto V_{\rm mem}(t)$, this implies the solution is exponential with a time constant $\tau$.
+
+Say the neuron starts at some value $U_{0}$ with no further input, i.e., $I_{\rm in}(t)=0$. The solution of the linear differential equation is:
+
+$$V_{\rm mem}(t) = V_0e^{-\frac{t}{\tau}}$$
+
+> In simple terms the injected ions $\rightarrow$ accumulate charge on the membrane + leakage of ions through the leaky channels
+
+Using forward Euler method, we can discretize the differential equation to solve for $V_mem$ at each time step $t$:
+
+
+$$V(t+\Delta t) = V(t) + \frac{\Delta t}{\tau}\big(-V(t) + RI_{\rm in}(t)\big)$$
+
+simply this can be achieved by [`snntorh.Lapicque`](https://snntorch.readthedocs.io/en/latest/snn.neurons_lapicque.html)
+
+> Add the if condition based threshold and reset mechanism to get the LIF neuron from the Lapicque model (RC circuit).
+
+<u>Note:</u> Most of the tutorial 2 is about coding simple LIF neuron from scratch and comparing with SNN torch Lapicque linking the use of spikegen module as input.
+
+#### code 
+
+```python
+
+# LIF w/Reset mechanism
+def leaky_integrate_and_fire(mem, cur=0, threshold=1, time_step=1e-3, R=5.1, C=5e-3):
+  tau_mem = R*C
+  spk = (mem > threshold)
+  mem = mem + (time_step/tau_mem)*(-mem + cur*R) - spk*threshold  # every time spk=1, subtract the threhsold
+  return mem, spk
+
+```
+
+### [`Tutorial-3`](https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_3.html)
+
 
 
