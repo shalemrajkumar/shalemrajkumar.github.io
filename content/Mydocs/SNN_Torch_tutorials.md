@@ -1,5 +1,6 @@
 ---
 title: Brief summary of SNN Torch tutorials
+date: 2026-08-23T00:00:00+00:00
 summary: "quick review of SNN Torch tutorials"
 weight : 0
 # aliases: [""]
@@ -17,6 +18,7 @@ disableShare: false
 hideSummary: false
 searchHidden: false
 ShowReadingTime: false
+ShowWordCount: false
 ShowBreadCrumbs: true
 ShowPostNavLinks: true
 # cover:
@@ -25,10 +27,10 @@ ShowPostNavLinks: true
 #     caption: "<text>" # display caption under cover
 #     relative: false # when using page bundles set this to true
 #     hidden: true # only hide on current single page
-# editPost:
-#     URL: "https://github.com/kiwamizamurai/content"
-#     Text: "Suggest Changes" # edit text
-#     appendFilePath: true # to append file path to Edit link
+editPost:
+     URL: "https://github.com/shalemrajkumar/shalemrajkumar.github.io/content"
+     Text: "Suggest Changes" # edit text
+     appendFilePath: true # to append file path to Edit link
 ---
 
 **_This is a brief documentation for my reference from [SNN Torch documentation]()_**
@@ -414,11 +416,11 @@ we will cover these aspects step by step, lets go with building a simple feedfor
 
 we will first **simplify** the current LIF model discussed previously to 
 
-$$V[t+1] = \beta V[t] + WX[t+1] - S[t]V_{\rm thr} \tag{0}$$
 
-<br>
+<div>
+$$U[t+1] = \underbrace{\beta V[t]}_{\mathrm{decay}} + \underbrace{WX[t+1]}_{\mathrm{input}} - \underbrace{S[t]V_{\mathrm{thr}}}_{\mathrm{reset}} \tag{0}$$
+</div>
 
-which is $V_t = decay \ rate \times V_{t-1} + input - reset$
 
 ##### <u>**Decay Rate**</u> ($\beta$)
 
@@ -472,11 +474,14 @@ $W$ is a learnable parameter that is updated independently of $\beta$.
 
 Recall that if the membrane exceeds the threshold, then the neuron emits an output spike: 
 
-$$S[t] = 1 \ \text{if} \ V[t] > V_{\rm thr} \ \text{else} \  0 \ \tag{9}$$
+
+$$S[t] = \begin{cases} 1, &\text{if}~V[t] > V_{\rm thr} \\\
+0, &\text{otherwise}\end{cases} \tag{9}$$
+
 
 If a spike is triggered, the membrane potential should be reset. The *reset-by-subtraction* mechanism is modeled by:
 
-> $$V[t+1] = \beta U[t] + WX[t+1] - S[t]U_{\rm thr} \tag{10}$$
+> $$V[t+1] = \beta V[t] + WX[t+1] - S[t]V_{\rm thr} \tag{10}$$
 
 As $W$ is a learnable parameter, and $V_{\rm thr}$ is often just set to $1$ (though can be tuned), this leaves the decay rate $\beta$ as the only hyperparameter left to be specified.
 
@@ -505,3 +510,5 @@ Assume the time-dependent equation is computed at discrete steps of $t, (t+\Delt
 
 $$\beta = \frac{V_0e^{-\frac{t+\Delta t}{\tau}}}{V_0e^{-\frac{t}{\tau}}} = \frac{V_0e^{-\frac{t + 2\Delta t}{\tau}}}{V_0e^{-\frac{t+\Delta t}{\tau}}} =...$$
 $$\implies \beta = e^{-\frac{\Delta t}{\tau}} $$
+
+
