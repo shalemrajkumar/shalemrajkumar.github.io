@@ -15,8 +15,8 @@ comments: true
 disableHLJS: true # to disable highlightjs
 disableShare: false
 hideSummary: false
-searchHidden: True # uncomment here -> after completion
-ShowReadingTime: true
+searchHidden: false
+ShowReadingTime: false
 ShowBreadCrumbs: true
 ShowPostNavLinks: true
 # cover:
@@ -396,7 +396,112 @@ def leaky_integrate_and_fire(mem, cur=0, threshold=1, time_step=1e-3, R=5.1, C=5
 
 ```
 
-### [`Tutorial-3`](https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_3.html)
+### [`Tutorial-3 Simplified LIF neuron and feedforward SNN`](https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_3.html)
+
+We currently had two main concepts covered 
+
+1. How to encode data into spikes 
+2. How to build a simple LIF neuron model 
+
+What needs to be covered ?
+
+3. Make a model with encoded inputs, spiking neurons and required architecture to solve a problem (classification, regression, etc.)
+4. Training and testing the model 
+
+we will cover these aspects step by step, lets go with building a simple feedforward fully connected SNN model with random inputs generated from `snntorch.spikegen.rate_cov`.
+
+#### Simplified LIF neuron
+
+we will first **simplify** the current LIF model discussed previously to 
+
+$$V[t+1] = \beta V[t] + WX[t+1] - S[t]V_{\rm thr} \tag{0}$$
+
+<br>
+
+which is $V_t = decay \ rate \times V_{t-1} + input - reset$
+
+##### <u>**Decay Rate**</u> ($\beta$)
+
+In the previous tutorial, the Euler method was used to derive the following solution to the passive membrane model:
+
+$$V(t+\Delta t) = (1-\frac{\Delta t}{\tau})V(t) + \frac{\Delta t}{\tau} I_{\rm in}(t)R \tag{1}$$
+
+Now assume $I_{\rm in}(t)=0 A$:
+
+$$V(t+\Delta t) = (1-\frac{\Delta t}{\tau})V(t) \tag{2}$$
+
+Let the ratio of subsequent values of $V$, i.e., $V(t+\Delta t)/V(t)$ be the decay rate of the membrane potential, also known as the `inverse time constant`:
+
+$$V(t+\Delta t) = \beta V(t) \tag{3}$$
+
+From $(1)$, this implies that:
+
+$$\beta = (1-\frac{\Delta t}{\tau}) \tag{4}$$
+
+For reasonable accuracy, $\Delta t << \tau$.
+
+If we assume $t$ represents time-steps rather than continuous time (discretize time)
+
+Then we can set $\Delta t = 1$. To further reduce the number of hyperparameters, assume $R=1$. From $(4)$, these assumptions lead to:
+
+$$\beta = (1-\frac{1}{\tau}) \implies (1-\beta)I_{\rm in} = \frac{1}{\tau}I_{\rm in} \tag{5}$$
+
+The input current is weighted by $(1-\beta)$ and also note $\tau$ = C.
+By additionally assuming input current instantaneously contributes to the membrane potential:
+
+$$V[t+1] = \beta V[t] + (1-\beta)I_{\rm in}[t+1] \tag{6}$$
+
+<u>Note:</u> The discretization of time means we are assuming that each time bin $t$ is brief enough to fit maximum of one spike in this interval.
+
+##### <u>**Weight**</u> ($W$)
+
+In deep learning, the weighting factor of an input is often a learnable parameter. Taking a step away from the physically viable assumptions made thus far, we subsume the effect of $(1-\beta)$ from $(6)$ into a learnable weight $W$, and replace $I_{\rm in}[t]$ accordingly with an input $X[t]$:
+
+$$WX[t] = I_{\rm in}[t] \tag{7}$$
+
+This can be interpreted in the following way. $X[t]$ is an input voltage, or spike, and is scaled by the synaptic conductance of $W$ to generate a current injection to the neuron. This gives us the following result:
+
+$$U[t+1] = \beta U[t] + WX[t+1] \tag{8}$$
 
 
+In future simulations, the effects of $W$ and $\beta$ are decoupled.
+$W$ is a learnable parameter that is updated independently of $\beta$.
 
+
+##### <u>**Spiking and Reset**</u>
+
+Recall that if the membrane exceeds the threshold, then the neuron emits an output spike: 
+
+$$S[t] = 1 \ \text{if} \ V[t] > V_{\rm thr} \ \text{else} \  0 \ \tag{9}$$
+
+If a spike is triggered, the membrane potential should be reset. The *reset-by-subtraction* mechanism is modeled by:
+
+> $$V[t+1] = \beta U[t] + WX[t+1] - S[t]U_{\rm thr} \tag{10}$$
+
+As $W$ is a learnable parameter, and $V_{\rm thr}$ is often just set to $1$ (though can be tuned), this leaves the decay rate $\beta$ as the only hyperparameter left to be specified.
+
+<u>Note:</u> some implementations might make slightly different assumptions. E.g., $S[t] \rightarrow S[t+1]$ in $(9)$, or $X[t] \rightarrow X[t+1]$ in $(10)$. This above derivation is what is used in snnTorch as it maps intuitively to a recurrent neural network representation, without any change in performance.
+
+<br>
+
+```python
+def leaky_integrate_and_fire(mem, x, w, beta, threshold=1):
+  spk = (mem > threshold) # if membrane exceeds threshold, spk=1, else, 0
+  mem = beta * mem + w*x - spk*threshold
+  return spk, mem
+```
+
+<br>
+
+To set $\beta$, we have the option of either using Eq $(3)$ to define it, or hard-coding it directly. Here, we will use $(3)$ for the sake of a demonstration, but in future, it will just be **hard-coded** as **we are more focused on something that works rather than biological precision**.
+
+Equation $(3)$ tells us that $\beta$ is the ratio of membrane potential across two subsequent time steps. 
+
+Solve this using the continuous time-dependent form of the equation (assuming no current injection), which was derived in [Tutorial 2](#tutorial-2-lif-neuron-over-perceptron):
+
+$$V(t) = V_0e^{-\frac{t}{\tau}}$$
+
+Assume the time-dependent equation is computed at discrete steps of $t, (t+\Delta t), (t+2\Delta t)...$, then we can find the ratio of membrane potential between subsequent steps using:
+
+$$\beta = \frac{V_0e^{-\frac{t+\Delta t}{\tau}}}{V_0e^{-\frac{t}{\tau}}} = \frac{V_0e^{-\frac{t + 2\Delta t}{\tau}}}{V_0e^{-\frac{t+\Delta t}{\tau}}} =...$$
+$$\implies \beta = e^{-\frac{\Delta t}{\tau}} $$
