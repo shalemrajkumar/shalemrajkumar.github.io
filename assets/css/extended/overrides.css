@@ -199,3 +199,22 @@ body .post-content .social-icons a {
   justify-content: center;
   align-items: center;
 }
+
+/*recent changes*/
+
+/* Figure styling */
+.post-content figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem auto;
+}
+
+/* Figure caption styling */
+.post-content figure figcaption,
+.post-content figure figcaption a {
+  text-align: center;
+  line-height: 1.35;
+  color: #888;
+  font-size: 15px;
+}

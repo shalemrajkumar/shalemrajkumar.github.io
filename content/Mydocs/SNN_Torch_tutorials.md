@@ -633,6 +633,133 @@ plt.show()
 
 ```
 
-![random input-output snn](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/random_io_snn.png)
+![random input-output snn](https://github.com/shalemrajkumar/shalemrajkumar.github.io/blob/main/images/Mydocs/random_io_snn.png?raw=true)
 
 At this stage this is just a random input spike trains, random weights and random outputs. We need to train the network to get meaningful inputs, outputs.
+
+### [`Tutorial-4 `](https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_4.html)
+
+Till now we have seen whenever there is input current there is instantaneous response in the $V_m$ which is fixed by soft reset but still we have instantaneous synaptic current when presynaptic neuron spikes but in reality post neuronal input current (prev_neuron spike $\rightarrow$ travel via axon $\rightarrow$ synaptic neurotransmitter release $\rightarrow$ post_neuron) gradually grows and decays with some delay.
+
+Currently I am not really sure on functional aspects of **delayed post synaptic current**, **non linearity** associated with this post synaptic current (bi-exponential growth and decay).
+
+Now only transmitter release dynamics but also neurotransmitters activate the post-synaptic receptors, which directly influence the effective current that flows into the post-synaptic neuron. Shown below are two types of excitatory receptors, AMPA and NMDA.
+
+ 
+<center>
+<img src='https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial2/2_6_synaptic.png?raw=true' width="600">
+</center>
+
+The simplest model of synaptic current assumes an increasing current on a very fast time-scale, followed by a relatively slow exponential decay, as seen in the AMPA receptor response above. This is very similar to the membrane potential dynamics of Lapicque's model.
+
+
+The synaptic model has two exponentially decaying terms: $I_{\rm syn}(t)$ and $U_{\rm mem}(t)$. The ratio between subsequent terms (i.e., decay rate) of $I_{\rm syn}(t)$ is set to $\alpha$, and that of $U(t)$ is set to $\beta$:
+
+$$ \alpha = e^{-\Delta t/\tau_{\rm syn}}$$
+
+$$ \beta = e^{-\Delta t/\tau_{\rm mem}}$$
+
+where the duration of a single time step is normalized to $\Delta t = 1$ in future. $\tau_{\rm syn}$ models the time constant of the synaptic current in an analogous way to how $\tau_{\rm mem}$ models the time constant of the membrane potential. $\beta$ is derived in the exact same way as the previous tutorial, with a similar approach to $\alpha$:
+
+$$I_{\rm syn}[t+1]=\underbrace{\alpha I_{\rm syn}[t]}_\text{decay} + \underbrace{WX[t+1]}_\text{input}$$
+
+$$U[t+1] = \underbrace{\beta V[t]}_\text{decay} + \underbrace{I_{\rm syn}[t+1]}_\text{input} - \underbrace{R[t]}_\text{reset}$$
+
+The same conditions for spiking as the previous LIF neurons still hold:
+
+$$S_{\rm out}[t] = \begin{cases} 1, &\text{if}~V[t] > V_{\rm thr} \\\
+0, &\text{otherwise}\end{cases}$$
+
+#### Synaptic Neuron Model
+
+we can use [`snnTorch.Synaptic`](https://snntorch.readthedocs.io/en/latest/snn.neurons_synaptic.html) to achive this 2nd-Order Integrate-and-Fire Neuron (including synaptic conductance)
+
+* $\alpha$: the decay rate of the synaptic current
+* $\beta$: the decay rate of the membrane potential (as with Lapicque)
+
+<center>
+<img src='https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial2/2_7_stein.png?raw=true' width="600">
+</center>
+
+Each spike contributes a shifted exponential decay to the synaptic current $I_{\rm syn}$, which are all summed together. This current is then integrated by the passive membrane equation derived earlier in tutorial 2
+
+<u>**When to use 1st or 2nd order neurons ?**</u>
+
+<u style="text-decoration: underline dashed; text-underline-offset: 4px;">**When 2nd-order neurons are better**</u>
+* If the temporal relations of your input data occur across long time-scales,
+* or if the input spiking pattern is sparse
+
+By having two recurrent equations with two decay terms ($\alpha$ and $\beta$), this neuron model is able to 'sustain' input spikes over a longer duration. This can be beneficial to retaining long-term relationships.
+
+An alternative use case might also be:
+
+* When temporal codes matter
+
+> If you care for the precise timing of a spike, it seems easier to control that for a 2nd-order neuron. In the `Leaky` model, a spike would be triggered in direct synchrony with the input. For 2nd-order models, the membrane potential is 'smoothed out' (i.e., the synaptic current model low-pass filters the membrane potential), which means $V[t]$ experiences a finite rise time. This is clear from the above image, where the output spikes experience a delay with respect to the input spikes.
+
+<u style="text-decoration: underline dashed; text-underline-offset: 4px;">**When 1st-order neurons are better**</u>
+* Any case that doesn't fall into the above, and sometimes, the above cases.
+
+By having one less equation in 1st-order neuron models (such as `Leaky`), the backpropagation process is made a little simpler. Though having said that, the `Synaptic` model is functionally equivalent to the `Leaky` model for $\alpha=0$. 
+
+In Jason's own hyperparameter sweeps on simple datasets, the optimal results seem to push $\alpha$ as close to 0 as possible. As data increases in complexity, $\alpha$ may grow larger.
+
+
+#### Alpha Neuron model 
+
+Alpha neuron model is a class of Spike Response Model (SRM), we need to understand SRM class of neuron models.
+
+SRM is a generalization of LIF that describes a neuron's membrane potential *not* through a differential equation, but through kernels (response functions) convolved with input spikes. 
+
+SRM directly writes the membrane potential as a sum of postsynaptic potentials (PSPs) triggered by each incoming spike, plus a reset/refractory kernel triggered by the neuron's own past spikes:
+
+<div>
+$$ V(t)=\underbrace{\sum _{f}\eta (t-t^{f})}_\text{effect of own past spikes: reset}+\underbrace{\int _{0}^{\infty }\kappa (s)I(t-s)\,ds}_\text{effect of incoming spikes}+V_{rest} $$
+</div>
+
+
+$\kappa$ : the kernel describing how much a single input spike raises the membrane potential over time (the shape of one PSP).
+
+$\eta$ : the refractory kernel describing how the neuron's own spike suppresses further firing right after.
+
+So SRM is essentially: "skip solving the ODE — just define the shape of the response to a spike directly, and stack them up." It's more general than LIF because you can pick any kernel shape you like.
+
+> SRM models are appealing as they can arbitrarily add refractoriness, threshold adaptation, and any number of other features simply by embedding them into the filter. 
+
+<center>
+<img src='https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial2/exp.gif?raw=true' width="400">
+</center> 
+
+<figure style="text-align: center;">
+  <img src="https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial2/alpha.gif?raw=true" width="400" alt="Spike response to different kernels">
+  <figcaption>spike to response from different kernels</figcaption>
+</figure>
+
+<br>
+
+The **Alpha neuron model** is SRM with a particular choice of kernel: the **alpha function** (rises and decays)
+
+$$V_{\rm mem}(t) = \sum_i W(\kappa * S_{\rm in})(t)$$
+
+where the incoming spikes $S_{\rm in}$ are convolved with a spike response kernel $\kappa( \cdot )$. The spike response is scaled by a synaptic weight, $W$. In the figures above, the top kernel is an exponentially decaying function and would be the equivalent of Lapicque's 1st-order neuron model. On the bottow, the kernel is an alpha function:
+
+$$\kappa(t) = \frac{t}{\tau}e^{1-t/\tau}\Theta(t)$$
+
+where $\tau$ is the time constant of the alpha kernel and $\Theta$ is the Heaviside step function. Most kernel-based methods adopt the alpha function as it provides a time-delay that is useful for temporal codes that are concerned with specifying the exact spike time of a neuron. 
+
+> In snnTorch, the spike response model is not directly implemented as a filter. Instead, it is recast into a recursive form such that only the previous time step of values are required to calculate the next set of values. This significantly reduces the memory overhead during learning.
+
+
+<center>
+<img src='https://github.com/jeshraghian/snntorch/blob/master/docs/_static/img/examples/tutorial2/2_9_alpha.png?raw=true' width="600">
+</center> 
+
+
+As the membrane potential is now determined by the sum of two exponentials, each of these exponents has their own independent decay rate. $\alpha$ defines the decay rate of the positive exponential, and $\beta$ defines the decay rate of the negative exponential.
+
+Usage of [`snnTorch.Alpha`](https://snntorch.readthedocs.io/en/latest/snn.neurons_alpha.html) is similar to previous neurons except we need divide synaptics currents into positive and negative.
+
+ Alpha neuron models are included with the intent of providing an option for porting across SRM-based models over into snnTorch, although natively training them seems to not be too effective, because we need to separate positive and negative currents.  
+
+
+>  In general, **Leaky** and **Synaptic** seem to be the most useful for training a network.
