@@ -1,5 +1,5 @@
 ---
-title: My RNN Documentation
+title: RNN Documentation
 weight : 0
 tags: ["RNN", "Neural Networks", "Deep Learning"]
 showToc: true
@@ -75,6 +75,12 @@ Optimization techniques for RNNs:
 
 ### Vanilla RNN
 
+
+<figure style="text-align: center;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Recurrent_neural_network_unfold.svg/500px-Recurrent_neural_network_unfold.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail"width="400" alt="Vanilla-RNN">
+  <figcaption>image credit: wikipedia</figcaption>
+</figure>
+
 #### algorithm
 
 1. Initialize weights and biases
@@ -82,8 +88,8 @@ Optimization techniques for RNNs:
     - at t=0
         - Initialize hidden state: $$ h_0  = 0 $$
     - For each time step t:
-        - Compute hidden state: $$ h_t = f\left(W_{ih} * x_t + W_hh * h_{t-1} + b_h)\right) $$
-        - Compute output: $$ y_t = W_ho * h_t + b_o $$
+        - Compute hidden state: $$ h_t = f\left(W_{ih} * x_t + W_{hh} * h_{t-1} + b_h)\right) $$
+        - Compute output: $$ y_t = W_{ho} * h_t + b_o $$
         - [Optional] Apply activation function to output: $$ y_t = g(y_t) $$
 3. Compute loss
 4. Backpropagate errors through time

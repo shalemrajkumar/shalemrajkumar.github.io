@@ -4,7 +4,7 @@ labels: "reminder"
 title: "Reminder: OSS update {{ date | date('dddd, MMMM Do') }}"
 ---
 
-@pradyunsg: This is your reminder to post an OSS update post.
+@sraj: This is your reminder to post an OSS update post.
 
 Here's your template:
 

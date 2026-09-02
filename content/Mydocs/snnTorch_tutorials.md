@@ -1,10 +1,10 @@
 ---
-title: Brief summary of SNN Torch tutorials
+title: Brief summary of snnTorch tutorials
 date: 2026-08-23T00:00:00+00:00
-summary: "quick review of SNN Torch tutorials"
+summary: "quick review of snnTorch tutorials"
 weight : 0
 # aliases: [""]
-tags: ["SNN", "SNN_Torch", "tutorial", "NN"]
+tags: ["SNN", "snnTorch", "tutorial", "NN"]
 author: "sraj"
 showToc: true
 TocOpen: false
@@ -33,7 +33,7 @@ editPost:
      appendFilePath: true # to append file path to Edit link
 ---
 
-**_This is a brief documentation for my reference from [SNN Torch documentation]()_**
+**_This is a brief documentation for my reference from [snnTorch documentation]()_**
 
 ### Reading
 
@@ -763,3 +763,8 @@ Usage of [`snnTorch.Alpha`](https://snntorch.readthedocs.io/en/latest/snn.neuron
 
 
 >  In general, **Leaky** and **Synaptic** seem to be the most useful for training a network.
+
+### [`Tutorial-5 Training SNNs`](https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_5.html)
+
+> <u>Note</u>: This tutorial along with other additional details covered [here](https://shalemrajkumar.github.io/mydocs/training_snns/)
+
